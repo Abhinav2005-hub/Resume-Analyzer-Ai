@@ -25,6 +25,14 @@ Analyze the following resume and return ONLY valid JSON in this exact format:
   "suggestions": ["suggestion1", "suggestion2"]
 }
 
+RULES:
+- ATS score must be realistic between 0-100
+- Give professional recruiter-level feedback
+- Suggestions should be actionable
+- Recommended roles should match the resume skills
+- Return ONLY JSON
+- Do NOT include markdown
+
 Resume:
 ${resumeText}
 `;
