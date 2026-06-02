@@ -10,38 +10,36 @@ const client = new OpenAI({
 const analyzeResumeWithAI = async (resumeText) => {
 
   const prompt = `
-You are an expert ATS Resume Analyzer and Technical Recruiter.
-
-Analyze the resume and return ONLY valid JSON.
-
-Return EXACTLY in this format:
-
-{
-  "summary": "string",
-  "atsScore": 0,
-  "strengths": ["strength1", "strength2"],
-  "weaknesses": ["weakness1", "weakness2"],
-  "missingSkills": ["skill1", "skill2"],
-  "recommendedRoles": ["role1", "role2"],
-  "suggestions": ["suggestion1", "suggestion2"]
-}
-
-IMPORTANT RULES:
-- Return ONLY JSON
-- Do NOT use markdown
-- Do NOT use \`\`\`json
-- Do NOT add explanations
-- atsScore must be between 0 and 100
-- summary must be a string
-- strengths must be an array
-- weaknesses must be an array
-- missingSkills must be an array
-- recommendedRoles must be an array
-- suggestions must be an array
-
-Resume:
-${resumeText}
-`;
+  You are an advanced ATS Resume Analyzer.
+  
+  Analyze the following resume and return ONLY valid JSON in this exact format:
+  
+  {
+    "atsScore": number,
+    "strengths": ["strength1", "strength2", "strength3"],
+    "weaknesses": ["weakness1", "weakness2", "weakness3"],
+    "missingSkills": ["skill1", "skill2", "skill3"],
+    "recommendedRoles": ["role1", "role2"],
+    "suggestions": ["suggestion1", "suggestion2", "suggestion3"],
+    "summary": "Short professional summary"
+  }
+  
+  RULES:
+  - ATS score must be between 0 and 100.
+  - Provide at least 3 strengths.
+  - Provide at least 3 weaknesses.
+  - Provide at least 3 missing skills.
+  - Provide at least 3 suggestions.
+  - Never leave any array empty.
+  - Weaknesses should be realistic areas for improvement.
+  - Recommended roles should match the candidate's skills.
+  - Return ONLY valid JSON.
+  - Do NOT use markdown.
+  - Do NOT wrap the response in \`\`\`json.
+  
+  Resume:
+  ${resumeText}
+  `;
 
   try {
 

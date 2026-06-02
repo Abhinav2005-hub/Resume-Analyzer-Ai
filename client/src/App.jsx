@@ -258,27 +258,38 @@ function App() {
 
                 {/* Weaknesses */}
                 <div className="bg-red-500/10 border border-red-500/20 p-10 rounded-[32px] backdrop-blur-xl">
-
-                  <h2 className="text-3xl font-black text-red-400 flex items-center gap-3 mb-8">
-                    <FaTimesCircle />
-                    Weaknesses
-                  </h2>
-
+                
+                <h2 className="text-3xl font-black text-red-400 flex items-center gap-3 mb-8">
+                  <FaTimesCircle />
+                  Weaknesses
+                </h2>
+                
+                {analysis?.weaknesses?.length > 0 ? (
+                
                   <ul className="space-y-5">
-
-                    {
-                      (analysis?.weaknesses || []).map((item, index) => (
-                        <li
-                          key={index}
-                          className="text-slate-300 text-lg"
-                        >
-                          {item}
-                        </li>
-                      ))
-                    }
-
+                
+                    {analysis.weaknesses.map((item, index) => (
+                      <li
+                        key={index}
+                        className="text-slate-300 text-lg flex items-start gap-3"
+                      >
+                        <span className="text-red-400">•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                
                   </ul>
-
+                
+                ) : (
+                
+                  <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-6">
+                    <p className="text-slate-400 italic">
+                      No weaknesses identified by AI.
+                    </p>
+                  </div>
+                
+                )}
+                
                 </div>
 
               </div>
