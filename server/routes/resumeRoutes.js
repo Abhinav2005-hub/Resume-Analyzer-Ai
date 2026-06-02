@@ -10,7 +10,7 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 
 const upload = multer({
-  storage: storage,
+  storage,
 });
 
 // Upload + Parse + Analyze
@@ -18,9 +18,9 @@ router.post(
   "/upload",
   upload.single("resume"),
   async (req, res) => {
-
     try {
 
+      // Check file exists
       if (!req.file) {
         return res.status(400).json({
           success: false,
@@ -33,30 +33,52 @@ router.post(
 
       const extractedText = data.text;
 
+      console.log("PDF TEXT EXTRACTED SUCCESSFULLY");
+
       // AI Analysis
       const aiResponse = await analyzeResumeWithAI(
         extractedText
       );
 
-      // Remove markdown formatting
+      // Remove markdown formatting if AI returns it
       const cleanedResponse = aiResponse
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim();
 
-      // Convert JSON string → JS object
-      const parsedResponse = JSON.parse(cleanedResponse);
+      console.log("AI RESPONSE");
+      console.log(cleanedResponse);
+      console.log("");
 
-      res.json({
+      let parsedResponse;
+
+      try {
+        parsedResponse = JSON.parse(cleanedResponse);
+      } catch (jsonError) {
+
+        console.log("INVALID JSON");
+        console.log(cleanedResponse);
+        console.log("");
+
+        return res.status(500).json({
+          success: false,
+          message: "AI returned invalid JSON",
+          rawResponse: cleanedResponse,
+        });
+      }
+
+      return res.status(200).json({
         success: true,
         analysis: parsedResponse,
       });
 
     } catch (error) {
 
+      console.log("SERVER ERROR");
       console.log(error);
+      console.log("");
 
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Error analyzing resume",
       });
